@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+    .input-field {
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .weather-info {
+      margin-top: 20px;
+    }
+    .country-list {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .country {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Information</h1>
+    <div class="input-field">
+      <label for="countrySelect">Choose a country:</label>
+      <select id="countrySelect">
+        <option value="37.7749,-122.4194">USA (San Francisco)</option>
+    <option value="51.5074,-0.1278">UK (London)</option>
+    <option value="48.8566,2.3522">France (Paris)</option>
+    <option value="35.6895,139.6917">Japan (Tokyo)</option>
+    <option value="-33.8688,151.2093">Australia (Sydney)</option>
+    <option value="40.7128,-74.0060">USA (New York)</option>
+    <option value="34.0522,-118.2437">USA (Los Angeles)</option>
+    <option value="41.9028,12.4964">Italy (Rome)</option>
+    <option value="52.5200,13.4050">Germany (Berlin)</option>
+    <option value="55.7558,37.6176">Russia (Moscow)</option>
+    <option value="28.7041,77.1025">India (New Delhi)</option>
+    <option value="39.9042,116.4074">China (Beijing)</option>
+    <option value="48.2082,16.3738">Austria (Vienna)</option>
+    <option value="59.3293,18.0686">Sweden (Stockholm)</option>
+    <option value="45.4215,-75.6992">Canada (Ottawa)</option>
+    <option value="39.9138,32.8597">Turkey (Ankara)</option>
+    <option value="55.9533,-3.1883">Scotland (Edinburgh)</option>
+    <option value="40.7306,-73.9352">USA (Brooklyn)</option>
+    <option value="30.0444,31.2357">Egypt (Cairo)</option>
+    <option value="34.0522,-118.2437">USA (Los Angeles)</option>
+    <option value="48.1351,11.5820">Germany (Munich)</option>
+    <option value="60.1699,24.9384">Finland (Helsinki)</option>
+    <option value="41.7687,12.1572">Italy (Naples)</option>
+    <option value="33.8688,151.2093">Australia (Sydney)</option>
+    <option value="19.4326,-99.1332">Mexico (Mexico City)</option>
+    <option value="45.5017,-73.5673">Canada (Montreal)</option>
+    <option value="51.1657,10.4515">Germany (Frankfurt)</option>
+    <option value="40.7306,-73.9352">USA (Queens)</option>
+    <option value="48.2082,16.3738">Austria (Vienna)</option>
+    <option value="34.0522,-118.2437">USA (Los Angeles)</option>
+    <option value="51.1657,10.4515">Germany (Frankfurt)</option>
+    <option value="55.7558,37.6176">Russia (Moscow)</option>
+    <option value="35.6762,139.6503">Japan (Tokyo)</option>
+    <option value="31.7683,35.2137">Israel (Jerusalem)</option>
+    <option value="12.9716,77.5946">India (Bangalore)</option>
+    <option value="51.1657,10.4515">Germany (Berlin)</option>
+    <option value="41.9028,12.4964">Italy (Rome)</option>
+    <option value="38.7169,9.2631">Portugal (Lisbon)</option>
+    <option value="39.9572,-75.1621">USA (Philadelphia)</option>
+    <option value="50.8503,4.3517">Belgium (Brussels)</option>
+    <option value="37.9838,23.7275">Greece (Athens)</option>
+    <option value="33.8688,151.2093">Australia (Sydney)</option>
+    <option value="55.6761,12.5683">Denmark (Copenhagen)</option>
+    <option value="19.4326,-99.1332">Mexico (Mexico City)</option>
+    <option value="35.8617,104.1954">China (Chengdu)</option>
+    <option value="48.1374,11.5755">Germany (Munich)</option>
+    <option value="39.7392,-104.9903">USA (Denver)</option>
+    <option value="51.5074,-0.1278">UK (London)</option>
+    <option value="60.1699,24.9384">Finland (Helsinki)</option>
+    <option value="40.7306,-73.9352">USA (Brooklyn)</option>
+    <option value="40.7306,-73.9352">USA (Manhattan)</option>
+</select>
+      </select>
+    </div>
+    <button id="fetchWeather">Get Weather</button>
+    <div class="weather-info" id="weatherInfo">
+     
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('fetchWeather').addEventListener('click', async () => {
+      const selectedValue = document.getElementById('countrySelect').value;
+      const [latitude, longitude] = selectedValue.split(',');
+
+      const apiUrl = `http://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=civil&output=json`;
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // Process and display the data
+        const weatherInfoDiv = document.getElementById('weatherInfo');
+        weatherInfoDiv.innerHTML = '';
+
+        if (data.dataseries) {
+          const weatherList = data.dataseries.map(entry => 
+            `<div>
+              <strong>Timepoint:</strong> ${entry.timepoint} hrs<br>
+              <strong>Temperature:</strong> ${entry.temp2m} °C<br>
+              <strong>Weather:</strong> ${entry.weather}
+            </div><hr>`
+          ).join('');
+
+          weatherInfoDiv.innerHTML = `<h3>Weather Forecast:</h3>${weatherList}`;
+        } else {
+          weatherInfoDiv.innerHTML = '<p>No data available for the selected location.</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        alert('Failed to fetch weather data. Please try again later.');
+      }
+    });
+  </script>
+</body>
+</html>
